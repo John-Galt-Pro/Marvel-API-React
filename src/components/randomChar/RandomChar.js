@@ -10,7 +10,7 @@ class RandomChar extends Component {
 
     constructor(props) {
         super(props);
-        this.updateChar();
+        console.log('constructor');
     }
 
     state = {
@@ -19,10 +19,21 @@ class RandomChar extends Component {
         error: false
     }
 
-
     marvelService = new MarvelService();
 
+    componentDidMount() {
+        this.updateChar();
+        this.timerId = setInterval(this.updateChar, 3000)
+        console.log('DidMount');
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerId);
+        console.log('Unmount');
+    }
+
     onCharLoaded = (char) => {
+        console.log('update');
         this.setState({char: char, loading: false})
     }
 
@@ -40,6 +51,7 @@ class RandomChar extends Component {
     }
 
     render() {
+        console.log('render');
         const {char, loading, error} = this.state;
         const errorMessage = error ? <ErrorMessage/> : null;
         const spinner = loading ? <Spinner/> : null;
